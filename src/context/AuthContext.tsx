@@ -1,8 +1,10 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import { createContext, ReactNode, useContext, useState } from "react";
+import { user } from "../constants/constants";
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  login: (username: string, password: string) => boolean;
+  login: (email: string, password: string) => boolean;
+  verifyOtp: (otp: string) => boolean;
   logout: () => void;
 }
 
@@ -11,8 +13,12 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const login = (username: string, password: string) => {
-    if (username === 'eurisko' && password === 'academy2025') {
+  const login = (email: string, password: string) => {
+    return email === user.email && password === user.password; 
+  };
+
+  const verifyOtp = (otp: string) => {
+    if (otp === '0000') {
       setIsAuthenticated(true);
       return true;
     }
@@ -22,7 +28,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => setIsAuthenticated(false);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, verifyOtp, logout }}>
       {children}
     </AuthContext.Provider>
   );
