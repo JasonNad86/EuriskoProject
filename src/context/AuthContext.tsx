@@ -4,7 +4,7 @@ import { useState, useEffect, createContext, useContext, ReactNode } from 'react
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (email: string, password: string) => boolean;
   verifyOtp: (otp: string) => Promise<boolean>;
   logout: () => Promise<void>;
 }
@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     loadAuthState();
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login =  (email: string, password: string) => {
     return email === user.email && password === user.password; 
   };
 

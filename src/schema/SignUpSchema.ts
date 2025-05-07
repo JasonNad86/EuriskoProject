@@ -5,9 +5,9 @@ export const signupSchema = z.object({
     email: z.string().email('Invalid email format'),
     password: z.string()
       .min(6, 'Password must be at least 6 characters'),
-    phone: z.string()
+    phoneNumber: z.string()
       .min(8, 'Invalid phone number')
-      .regex(/^[0-9]+$/, 'Numbers only')
+      .regex(/^[0-9]+$/, 'Input Numbers only')
   });
   
   export type SignupFormData = z.infer<typeof signupSchema>;
