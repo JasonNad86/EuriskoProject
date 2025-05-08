@@ -9,7 +9,12 @@ import {useAuth} from '../../context/AuthContext';
 import {AuthStackParams} from '../../types/NavigationStack';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faEye, faEyeSlash, faMoon, faSun} from '@fortawesome/free-solid-svg-icons';
+import {
+  faEye,
+  faEyeSlash,
+  faMoon,
+  faSun,
+} from '@fortawesome/free-solid-svg-icons';
 import CustomText from '../../components/CustomText/CustomText';
 import {useTheme} from '../../context/ThemeContext';
 import Toast from 'react-native-toast-message';
@@ -20,7 +25,7 @@ const LoginScreen = () => {
   const {login} = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const {isDark, toggleTheme} = useTheme();
-  const styles = getLoginStyles(isDark)
+  const styles = getLoginStyles(isDark);
 
   const {
     control,
@@ -37,10 +42,14 @@ const LoginScreen = () => {
   const handleLogin = (data: LoginFormData) => {
     const isValid = login(data.email, data.password);
     if (isValid) {
-      Toast.show({type:'success',text1:"Successfully Logged in"})
+      Toast.show({type: 'success', text1: 'Successfully Logged in'});
       navigation.navigate('Verification');
     } else {
-      Toast.show({type:'error',text1:"Invalid Credentials"})
+      Toast.show({
+        type: 'error',
+        text1: 'Login Failed',
+        text2: 'Please check your credentials and try again.',
+      });
     }
   };
 
@@ -51,8 +60,10 @@ const LoginScreen = () => {
           Switch to {isDark ? 'Light' : 'Dark'} Mode
         </CustomText>
         <TouchableOpacity onPress={toggleTheme}>
-          <FontAwesomeIcon icon={isDark ? faSun : faMoon} color={isDark ? 'orange' : 'black'}
- />
+          <FontAwesomeIcon
+            icon={isDark ? faSun : faMoon}
+            color={isDark ? 'orange' : 'black'}
+          />
         </TouchableOpacity>
       </View>
       <View style={styles.formWrapper}>
@@ -70,7 +81,7 @@ const LoginScreen = () => {
                   placeholderTextColor="#9CA3AF"
                   keyboardType="email-address"
                   autoCapitalize="none"
-                  autoComplete='off'
+                  autoComplete="off"
                   value={value}
                   onChangeText={onChange}
                   style={styles.input}
