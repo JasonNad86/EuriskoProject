@@ -42,6 +42,11 @@ export const getLoginStyles = (isDark: boolean) => StyleSheet.create({
     marginBottom: 8,
     fontWeight: '500',
   },
+  topButton: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: isDark ? '#ffffff' : '#333',
+  },
   input: {
     backgroundColor: isDark ? '#363636' : 'white',
     borderWidth: 1,

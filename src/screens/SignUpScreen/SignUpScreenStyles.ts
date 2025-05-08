@@ -99,4 +99,9 @@ export const getSignupStyles = (isDark: boolean) => StyleSheet.create({
     alignItems: 'center',
     padding: 16,
   },
+  topButton: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: isDark ? '#ffffff' : '#333',
+  },
 });

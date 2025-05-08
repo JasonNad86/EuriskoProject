@@ -40,16 +40,17 @@ const SignUpScreen = () => {
 
   return (
     <View style={styles.container}>
-      <View
-        style={styles.icon}>
-        <CustomText style={{marginRight: 8}}>
-          Switch to {isDark ? 'Light' : 'Dark'} Mode
-        </CustomText>
+      <View style={styles.icon}>
         <TouchableOpacity onPress={toggleTheme}>
+          <View style={{flexDirection:'row'}}>
+          <CustomText style={[styles.topButton, { marginRight: 8 }]}>
+            {isDark ? 'Light Mode' : 'Dark Mode'}
+          </CustomText>
           <FontAwesomeIcon
             icon={isDark ? faSun : faMoon}
             color={isDark ? 'orange' : 'black'}
           />
+          </View>
         </TouchableOpacity>
       </View>
       <View style={styles.formWrapper}>
