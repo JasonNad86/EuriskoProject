@@ -77,7 +77,7 @@ const LoginScreen = () => {
               <View style={styles.inputContainer}>
                 <CustomText style={styles.label}>Email</CustomText>
                 <TextInput
-                  placeholder="you@example.com"
+                  placeholder="johndoe@example.com"
                   placeholderTextColor="#9CA3AF"
                   keyboardType="email-address"
                   autoCapitalize="none"
