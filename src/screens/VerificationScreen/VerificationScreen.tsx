@@ -7,7 +7,6 @@ import { VerificationFormData, verificationSchema } from "../../schema/Verificat
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const VerificationScreen = () => {
-    const [code, setCode] = useState('');
     const {verifyOtp} = useAuth();
 
     const {
@@ -22,7 +21,7 @@ const VerificationScreen = () => {
       });
     
       const onSubmit = (data: VerificationFormData) => {
-        verifyOtp(code);
+        verifyOtp(data.verificationCode);
         console.log('Verification Data:', data);
       };
 
