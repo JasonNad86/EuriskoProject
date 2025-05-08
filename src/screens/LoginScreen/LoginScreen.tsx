@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {Text, TextInput, View, TouchableOpacity} from 'react-native';
+import {TextInput, View, TouchableOpacity} from 'react-native';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {Controller, useForm} from 'react-hook-form';
 import {LoginFormData, loginSchema} from '../../schema/LoginSchema';
@@ -9,6 +9,7 @@ import {useAuth} from '../../context/AuthContext';
 import { AuthStackParams } from '../../types/NavigationStack';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import CustomText from '../../components/CustomText';
 
 const LoginScreen = () => {
   const navigation =
@@ -40,7 +41,7 @@ const LoginScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.formWrapper}>
-        <Text style={styles.title}>Login</Text>
+        <CustomText style={styles.title}>Login</CustomText>
 
         <View style={styles.formContainer}>
           <Controller
@@ -48,7 +49,7 @@ const LoginScreen = () => {
             name="email"
             render={({field: {onChange, value}}) => (
               <View style={styles.inputContainer}>
-                <Text style={styles.label}>Email</Text>
+                <CustomText style={styles.label}>Email</CustomText>
                 <TextInput
                   placeholder="you@example.com"
                   placeholderTextColor="#9CA3AF"
@@ -62,7 +63,7 @@ const LoginScreen = () => {
             )}
           />
           {errors.email && (
-            <Text style={styles.error}>{errors.email.message}</Text>
+            <CustomText style={styles.error}>{errors.email.message}</CustomText>
           )}
 
           <Controller
@@ -70,7 +71,7 @@ const LoginScreen = () => {
             name="password"
             render={({field: {onChange, value}}) => (
               <View style={styles.inputContainer}>
-                <Text style={styles.label}>Password</Text>
+                <CustomText style={styles.label}>Password</CustomText>
                 <View style={styles.passwordInput}>
                   <TextInput
                     placeholder="••••••••"
@@ -95,21 +96,21 @@ const LoginScreen = () => {
             )}
           />
           {errors.password && (
-            <Text style={styles.error}>{errors.password.message}</Text>
+            <CustomText style={styles.error}>{errors.password.message}</CustomText>
           )}
 
           <TouchableOpacity
             style={styles.button}
             onPress={handleSubmit(handleLogin)}>
-            <Text style={styles.buttonText}>Log In</Text>
+            <CustomText style={styles.buttonText}>Log In</CustomText>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.navigationLinkContainer}
             onPress={() => navigation.navigate('SignUp')}>
-            <Text style={styles.navigationLinkText}>
+            <CustomText style={styles.navigationLinkText}>
               Already have an account? {' '}
-              <Text style={styles.navigationLink}>Sign up</Text>
-            </Text>
+              <CustomText style={styles.navigationLink}>Sign up</CustomText>
+            </CustomText>
           </TouchableOpacity>
         </View>
       </View>

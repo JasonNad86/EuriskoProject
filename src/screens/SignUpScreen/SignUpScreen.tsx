@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, TextInput, View, TouchableOpacity } from 'react-native';
+import { TextInput, View, TouchableOpacity } from 'react-native';
 import { SignupFormData, signupSchema } from '../../schema/SignUpSchema';
 import { styles } from './SignUpScreenStyles';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import { AuthStackParams } from '../../types/NavigationStack';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import CustomText from '../../components/CustomText';
 
 const SignUpScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<AuthStackParams>>();
@@ -34,7 +35,7 @@ const SignUpScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.formWrapper}>
-        <Text style={styles.title}>Sign Up</Text>
+        <CustomText style={styles.title}>Sign Up</CustomText>
         
         <View style={styles.formContainer}>
           <Controller
@@ -42,7 +43,7 @@ const SignUpScreen = () => {
             name="name"
             render={({ field: { onChange, value } }) => (
               <View style={styles.inputContainer}>
-                <Text style={styles.label}>Full Name</Text>
+                <CustomText style={styles.label}>Full Name</CustomText>
                 <TextInput
                   placeholder="John Doe"
                   placeholderTextColor="#9CA3AF"
@@ -53,14 +54,14 @@ const SignUpScreen = () => {
               </View>
             )}
           />
-          {errors.name && <Text style={styles.error}>{errors.name.message}</Text>}
+          {errors.name && <CustomText style={styles.error}>{errors.name.message}</CustomText>}
 
           <Controller
             control={control}
             name="email"
             render={({ field: { onChange, value } }) => (
               <View style={styles.inputContainer}>
-                <Text style={styles.label}>Email</Text>
+                <CustomText style={styles.label}>Email</CustomText>
                 <TextInput
                   placeholder="you@example.com"
                   placeholderTextColor="#9CA3AF"
@@ -73,7 +74,7 @@ const SignUpScreen = () => {
             )}
           />
           {errors.email && (
-            <Text style={styles.error}>{errors.email.message}</Text>
+            <CustomText style={styles.error}>{errors.email.message}</CustomText>
           )}
 
           <Controller
@@ -81,7 +82,7 @@ const SignUpScreen = () => {
             name="password"
             render={({ field: { onChange, value } }) => (
               <View style={styles.inputContainer}>
-                <Text style={styles.label}>Password</Text>
+                <CustomText style={styles.label}>Password</CustomText>
                 <View style={styles.passwordInput}>
                   <TextInput
                     placeholder="••••••••"
@@ -106,7 +107,7 @@ const SignUpScreen = () => {
             )}
           />
           {errors.password && (
-            <Text style={styles.error}>{errors.password.message}</Text>
+            <CustomText style={styles.error}>{errors.password.message}</CustomText>
           )}
 
           <Controller
@@ -114,7 +115,7 @@ const SignUpScreen = () => {
             name="phoneNumber"
             render={({ field: { onChange, value } }) => (
               <View style={styles.inputContainer}>
-                <Text style={styles.label}>Phone Number</Text>
+                <CustomText style={styles.label}>Phone Number</CustomText>
                 <TextInput
                   placeholder="123-456-7890"
                   placeholderTextColor="#9CA3AF"
@@ -127,24 +128,24 @@ const SignUpScreen = () => {
             )}
           />
           {errors.phoneNumber && (
-            <Text style={styles.error}>{errors.phoneNumber.message}</Text>
+            <CustomText style={styles.error}>{errors.phoneNumber.message}</CustomText>
           )}
 
           <TouchableOpacity
             style={styles.button}
             onPress={handleSubmit(onSubmit)}
           >
-            <Text style={styles.buttonText}>Sign Up</Text>
+            <CustomText style={styles.buttonText}>Sign Up</CustomText>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.navigationLinkContainer}
             onPress={() => navigation.navigate('Login')}
           >
-            <Text style={styles.navigationLinkText}>
+            <CustomText style={styles.navigationLinkText}>
               Already have an account? {' '}
-              <Text style={styles.navigationLink}>Login</Text>
-            </Text>
+              <CustomText style={styles.navigationLink}>Login</CustomText>
+            </CustomText>
           </TouchableOpacity>
         </View>
       </View>

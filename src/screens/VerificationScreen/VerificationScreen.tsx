@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { Button, Text, TextInput, View } from "react-native";
+import { Button, TextInput, View } from "react-native";
 import { styles } from "./VerificationScreenStyles";
 import { useAuth } from "../../context/AuthContext";
 import { Controller, useForm } from "react-hook-form";
 import { VerificationFormData, verificationSchema } from "../../schema/VerificationSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import CustomText from "../../components/CustomText";
 
 const VerificationScreen = () => {
     const {verifyOtp} = useAuth();
@@ -27,7 +27,7 @@ const VerificationScreen = () => {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.label}>Enter the 4-digit code</Text>
+        <CustomText style={styles.label}>Enter the 4-digit code</CustomText>
         
         <Controller
           control={control}
@@ -45,9 +45,9 @@ const VerificationScreen = () => {
         />
         
         {errors.verificationCode && (
-          <Text style={styles.error}>
+          <CustomText style={styles.error}>
             {errors.verificationCode.message}
-          </Text>
+          </CustomText>
         )}
   
         <Button

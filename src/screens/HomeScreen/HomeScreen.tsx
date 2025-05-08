@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, FlatList, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import productsData from '../../mock/Products.json'
 import { MainStackParams } from '../../types/NavigationStack';

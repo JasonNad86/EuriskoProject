@@ -1,7 +1,8 @@
-import React, { cache } from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import React from 'react';
+import { Image, TouchableOpacity, View } from 'react-native';
 import { styles } from './ProductCardStyles';
 import { Product } from '../../types/Product';
+import CustomText from '../CustomText';
 
 interface Props {
   product: Product;
@@ -17,8 +18,8 @@ const ProductCard = ({ product, onPress } : Props) => {
         resizeMode="contain"
       />
       <View style={styles.textContainer}>
-        <Text style={styles.title}>{product.title}</Text>
-        <Text style={styles.price}>${product.price}</Text>
+        <CustomText style={styles.title}>{product.title}</CustomText>
+        <CustomText style={styles.price}>${product.price}</CustomText>
       </View>
     </TouchableOpacity>
   );
