@@ -56,9 +56,9 @@ const LoginScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.icon}>
-        <CustomText style={{marginRight: 8}}>
-          Switch to {isDark ? 'Light' : 'Dark'} Mode
-        </CustomText>
+      <CustomText style={[styles.topButton, { marginRight: 8 }]}>
+            {isDark ? 'Light Mode' : 'Dark Mode'}
+          </CustomText>
         <TouchableOpacity onPress={toggleTheme}>
           <FontAwesomeIcon
             icon={isDark ? faSun : faMoon}
