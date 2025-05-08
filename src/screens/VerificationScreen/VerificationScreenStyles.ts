@@ -16,6 +16,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     padding: 10,
+    marginBottom:5,
     width: '50%',
     textAlign: 'center',
     borderRadius: 8,
