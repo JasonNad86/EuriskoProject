@@ -1,25 +1,25 @@
-import {StyleSheet, Platform} from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
-export const styles = StyleSheet.create({
+export const getSignupStyles = (isDark: boolean) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f3f4f6',
+    backgroundColor: isDark ? '#1a1a1a' : '#f3f4f6',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
   },
   formWrapper: {
-    backgroundColor: 'white',
+    backgroundColor: isDark ? '#242424' : 'white',
     width: '90%',
     maxWidth: 400,
     borderRadius: 8,
     padding: 24,
     ...Platform.select({
-      android: {elevation: 4},
+      android: { elevation: 4 },
       ios: {
-        shadowColor: '#000',
-        shadowOffset: {width: 0, height: 2},
-        shadowOpacity: 0.1,
+        shadowColor: isDark ? '#ffffff' : '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: isDark ? 0.1 : 0.1,
         shadowRadius: 8,
       },
     }),
@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#1f2937',
+    color: isDark ? '#ffffff' : '#1f2937',
     marginBottom: 24,
     textAlign: 'center',
   },
@@ -39,18 +39,18 @@ export const styles = StyleSheet.create({
   },
   label: {
     fontSize: 14,
-    color: '#374151',
+    color: isDark ? '#cccccc' : '#374151',
     marginBottom: 8,
     fontWeight: '500',
   },
   input: {
-    backgroundColor: 'white',
+    backgroundColor: isDark ? '#363636' : 'white',
     borderWidth: 1,
-    borderColor: '#d1d5db',
+    borderColor: isDark ? '#555555' : '#d1d5db',
     borderRadius: 6,
     padding: 12,
     fontSize: 16,
-    color: '#1f2937',
+    color: isDark ? '#ffffff' : '#1f2937',
   },
   passwordInput: {
     flexDirection: 'row',
@@ -77,7 +77,7 @@ export const styles = StyleSheet.create({
     color: '#dc2626',
     fontSize: 14,
     marginBottom: 8,
-    backgroundColor: '#fee2e2',
+    backgroundColor: isDark ? '#2a1a1a' : '#fee2e2',
     padding: 8,
     borderRadius: 4,
   },
@@ -86,11 +86,17 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   navigationLinkText: {
-    color: '#6b7280',
+    color: isDark ? '#a0a0a0' : '#6b7280',
     fontSize: 14,
   },
   navigationLink: {
     color: '#2563eb',
     fontWeight: '600',
+  },
+  icon: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    padding: 16,
   },
 });

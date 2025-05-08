@@ -3,19 +3,24 @@ import {TextInput, View, TouchableOpacity} from 'react-native';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {Controller, useForm} from 'react-hook-form';
 import {LoginFormData, loginSchema} from '../../schema/LoginSchema';
-import {styles} from './LoginScreenStyles';
+import {getLoginStyles} from './LoginScreenStyles';
 import {useNavigation} from '@react-navigation/native';
 import {useAuth} from '../../context/AuthContext';
-import { AuthStackParams } from '../../types/NavigationStack';
+import {AuthStackParams} from '../../types/NavigationStack';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import CustomText from '../../components/CustomText';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faEye, faEyeSlash, faMoon, faSun} from '@fortawesome/free-solid-svg-icons';
+import CustomText from '../../components/CustomText/CustomText';
+import {useTheme} from '../../context/ThemeContext';
+import Toast from 'react-native-toast-message';
 
 const LoginScreen = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<AuthStackParams>>();
   const {login} = useAuth();
   const [showPassword, setShowPassword] = useState(false);
+  const {isDark, toggleTheme} = useTheme();
+  const styles = getLoginStyles(isDark)
 
   const {
     control,
@@ -32,14 +37,24 @@ const LoginScreen = () => {
   const handleLogin = (data: LoginFormData) => {
     const isValid = login(data.email, data.password);
     if (isValid) {
+      Toast.show({type:'success',text1:"Successfully Logged in"})
       navigation.navigate('Verification');
     } else {
-      console.log('Invalid credentials');
+      Toast.show({type:'error',text1:"Invalid Credentials"})
     }
   };
 
   return (
     <View style={styles.container}>
+      <View style={styles.icon}>
+        <CustomText style={{marginRight: 8}}>
+          Switch to {isDark ? 'Light' : 'Dark'} Mode
+        </CustomText>
+        <TouchableOpacity onPress={toggleTheme}>
+          <FontAwesomeIcon icon={isDark ? faSun : faMoon} color={isDark ? 'orange' : 'black'}
+ />
+        </TouchableOpacity>
+      </View>
       <View style={styles.formWrapper}>
         <CustomText style={styles.title}>Login</CustomText>
 
@@ -54,7 +69,8 @@ const LoginScreen = () => {
                   placeholder="you@example.com"
                   placeholderTextColor="#9CA3AF"
                   keyboardType="email-address"
-                  autoCapitalize='none'
+                  autoCapitalize="none"
+                  autoComplete='off'
                   value={value}
                   onChangeText={onChange}
                   style={styles.input}
@@ -77,7 +93,7 @@ const LoginScreen = () => {
                     placeholder="••••••••"
                     placeholderTextColor="#9CA3AF"
                     secureTextEntry={!showPassword}
-                    autoCapitalize='none'
+                    autoCapitalize="none"
                     value={value}
                     onChangeText={onChange}
                     style={[styles.input, {flex: 1}]}
@@ -85,18 +101,20 @@ const LoginScreen = () => {
                   <TouchableOpacity
                     onPress={() => setShowPassword(!showPassword)}
                     style={styles.eyeButton}>
-                    <Icon
-                      name={showPassword ? 'eye-slash' : 'eye'}
-                      size={18}
-                      color="#6B7280"
-                    />
+                    {showPassword ? (
+                      <FontAwesomeIcon icon={faEyeSlash} />
+                    ) : (
+                      <FontAwesomeIcon icon={faEye} />
+                    )}
                   </TouchableOpacity>
                 </View>
               </View>
             )}
           />
           {errors.password && (
-            <CustomText style={styles.error}>{errors.password.message}</CustomText>
+            <CustomText style={styles.error}>
+              {errors.password.message}
+            </CustomText>
           )}
 
           <TouchableOpacity
@@ -108,7 +126,7 @@ const LoginScreen = () => {
             style={styles.navigationLinkContainer}
             onPress={() => navigation.navigate('SignUp')}>
             <CustomText style={styles.navigationLinkText}>
-              Already have an account? {' '}
+              Already have an account?{' '}
               <CustomText style={styles.navigationLink}>Sign up</CustomText>
             </CustomText>
           </TouchableOpacity>

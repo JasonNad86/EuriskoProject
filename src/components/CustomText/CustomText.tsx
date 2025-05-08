@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, TextProps, StyleSheet } from 'react-native';
+import { Text, TextProps } from 'react-native';
+import { styles } from './CustomTextStyle';
 
 const CustomText = ({ style, children, ...props }: TextProps) => {
   return (
@@ -8,11 +9,4 @@ const CustomText = ({ style, children, ...props }: TextProps) => {
     </Text>
   );
 };
-
-const styles = StyleSheet.create({
-  text: {
-    fontFamily: 'Montserrat', 
-  },
-});
-
 export default CustomText;
