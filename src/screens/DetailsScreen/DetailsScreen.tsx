@@ -8,6 +8,7 @@ import CustomText from '../../components/CustomText/CustomText';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faShoppingCart, faShare, faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { useTheme } from '../../context/ThemeContext';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type Props = NativeStackScreenProps<MainStackParams, 'Details'>;
 

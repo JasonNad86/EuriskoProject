@@ -11,14 +11,15 @@ import {faEyeSlash, faMoon, faSun} from '@fortawesome/free-solid-svg-icons';
 import {faEye} from '@fortawesome/free-solid-svg-icons';
 import CustomText from '../../components/CustomText/CustomText';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import { useTheme } from '../../context/ThemeContext';
+import {useTheme} from '../../context/ThemeContext';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const SignUpScreen = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<AuthStackParams>>();
   const [showPassword, setShowPassword] = useState(false);
-    const {isDark, toggleTheme} = useTheme();
-    const styles = getSignupStyles(isDark);
+  const {isDark, toggleTheme} = useTheme();
+  const styles = getSignupStyles(isDark);
 
   const {
     control,
@@ -39,23 +40,18 @@ const SignUpScreen = () => {
   };
 
   return (
+    <SafeAreaView style={{flex: 1}}>
+    <View style={styles.navbar}>
+      <TouchableOpacity onPress={toggleTheme}>
+        <FontAwesomeIcon
+          icon={isDark ? faSun : faMoon}
+          color={isDark ? 'orange' : 'black'}
+        />
+      </TouchableOpacity>
+    </View>
     <View style={styles.container}>
-      <View style={styles.icon}>
-        <TouchableOpacity onPress={toggleTheme}>
-          <View style={{flexDirection:'row'}}>
-          <CustomText style={[styles.topButton, { marginRight: 8 }]}>
-            {isDark ? 'Light Mode' : 'Dark Mode'}
-          </CustomText>
-          <FontAwesomeIcon
-            icon={isDark ? faSun : faMoon}
-            color={isDark ? 'orange' : 'black'}
-          />
-          </View>
-        </TouchableOpacity>
-      </View>
+      <CustomText style={styles.title}>Sign Up</CustomText>
       <View style={styles.formWrapper}>
-        <CustomText style={styles.title}>Sign Up</CustomText>
-
         <View style={styles.formContainer}>
           <Controller
             control={control}
@@ -66,6 +62,8 @@ const SignUpScreen = () => {
                 <TextInput
                   placeholder="John Doe"
                   placeholderTextColor="#9CA3AF"
+                  autoCapitalize="words"
+                  autoComplete="name"
                   value={value}
                   onChangeText={onChange}
                   style={styles.input}
@@ -87,6 +85,8 @@ const SignUpScreen = () => {
                   placeholder="johndoe@example.com"
                   placeholderTextColor="#9CA3AF"
                   keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoComplete="email"
                   value={value}
                   onChangeText={onChange}
                   style={styles.input}
@@ -109,6 +109,7 @@ const SignUpScreen = () => {
                     placeholder="••••••••"
                     placeholderTextColor="#9CA3AF"
                     secureTextEntry={!showPassword}
+                    autoCapitalize="none"
                     value={value}
                     onChangeText={onChange}
                     style={[styles.input, {flex: 1}]}
@@ -142,6 +143,7 @@ const SignUpScreen = () => {
                   placeholder="123-456-7890"
                   placeholderTextColor="#9CA3AF"
                   keyboardType="phone-pad"
+                  autoComplete="tel"
                   value={value}
                   onChangeText={onChange}
                   style={styles.input}
@@ -172,6 +174,7 @@ const SignUpScreen = () => {
         </View>
       </View>
     </View>
+  </SafeAreaView>
   );
 };
 

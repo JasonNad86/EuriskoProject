@@ -18,6 +18,7 @@ import {
 import CustomText from '../../components/CustomText/CustomText';
 import {useTheme} from '../../context/ThemeContext';
 import Toast from 'react-native-toast-message';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const LoginScreen = () => {
   const navigation =
@@ -54,20 +55,18 @@ const LoginScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.icon}>
-      <CustomText style={[styles.topButton, { marginRight: 8 }]}>
-            {isDark ? 'Light Mode' : 'Dark Mode'}
-          </CustomText>
-        <TouchableOpacity onPress={toggleTheme}>
+    <SafeAreaView style={{flex:1}}>
+    <View style={styles.navbar}>
+      <TouchableOpacity onPress={toggleTheme}>
           <FontAwesomeIcon
             icon={isDark ? faSun : faMoon}
             color={isDark ? 'orange' : 'black'}
           />
         </TouchableOpacity>
       </View>
+    <View style={styles.container}>
+    <CustomText style={styles.title}>Login</CustomText>
       <View style={styles.formWrapper}>
-        <CustomText style={styles.title}>Login</CustomText>
 
         <View style={styles.formContainer}>
           <Controller
@@ -144,6 +143,7 @@ const LoginScreen = () => {
         </View>
       </View>
     </View>
+   </SafeAreaView>
   );
 };
 

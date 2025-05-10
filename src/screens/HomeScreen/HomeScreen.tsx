@@ -12,6 +12,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faMoon, faSun, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import CustomText from '../../components/CustomText/CustomText';
 import { useTheme } from '../../context/ThemeContext';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 
 const HomeScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<MainStackParams>>();
@@ -26,6 +28,23 @@ const HomeScreen = () => {
     />
   );
 
+  const handleLogout = () => {
+    const success = !!logout();
+    if (success) {
+      Toast.show({
+        type: 'success',
+        text1: 'Logout Successful',
+      });
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Logout Failed',
+        text2: 'Something went wrong. Please try again.',
+      });
+    }
+  };
+  
+
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
@@ -36,7 +55,7 @@ const HomeScreen = () => {
           </CustomText>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={logout} style={styles.logoutButton}>
+        <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
           <FontAwesomeIcon icon={faSignOutAlt} size={18} color="white" />
         </TouchableOpacity>
       </View>
