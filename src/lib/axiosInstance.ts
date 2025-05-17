@@ -1,17 +1,18 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios, {AxiosError} from 'axios';
-import { AuthAxiosRequestConfig } from '../types/Axios';
+import {useAuthStore} from '../store/AuthStore';
+import {Alert} from 'react-native';
 
 const axiosInstance = axios.create({
-  baseURL: 'https://backend-practice.eurisko.me',
+  baseURL: 'https://backend-practice.eurisko.me/api',
   timeout: 10000,
 });
 
-axiosInstance.interceptors.request.use(async (config: AuthAxiosRequestConfig) => {
-    const token = await AsyncStorage.getItem('accessToken');
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
-    }
+axiosInstance.interceptors.request.use(async config => {
+  const accessToken = useAuthStore.getState().accessToken;
+  if (accessToken) {
+    config.headers['Authorization'] = `Bearer ${accessToken}`;
+  }
   return config;
 });
 
@@ -19,8 +20,10 @@ axiosInstance.interceptors.response.use(
   response => response,
   (error: AxiosError) => {
     if (error?.response?.status === 401) {
-      console.log('Error: Unauthorized — you may need to refresh the token.');
+      Alert.alert('Error: Unauthorized — you may need to refresh the token.');
       // TODO: trigger refreshToken flow or redirect to login
+    } else if (error?.response?.status === 403) {
+      Alert.alert('Please verify your email first');
     }
     return Promise.reject(error);
   },

@@ -1,8 +1,8 @@
 import {z} from 'zod'
 
 export const verificationSchema = z.object({
-    verificationCode: z.string()
-    .length(4, { message: "Code must be exactly 4 digits" })
+    otp: z.string()
+    .length(6, { message: "Code must be exactly 6 digits" })
     .regex(/^\d+$/, { message: "Code must contain only numbers" })
 });
 

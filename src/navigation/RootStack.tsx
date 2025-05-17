@@ -2,16 +2,17 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MainStack from './MainStack';
 import AuthStack from './AuthStack';
-import { useAuth } from '../context/AuthContext';
 import { RootStackParams } from '../types/NavigationStack';
+import { useAuthStore } from '../store/AuthStore';
 
 const Stack = createNativeStackNavigator<RootStackParams>();
 
 const RootStack = () => {
-  const { isAuthenticated } = useAuth();
+  const { accessToken } = useAuthStore();
+  const isUserLoggedIn = !! accessToken;
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {isAuthenticated ? (
+      {isUserLoggedIn ? (
         <Stack.Screen name="Main" component={MainStack} />
       ) : (
         <Stack.Screen name="Auth" component={AuthStack} />

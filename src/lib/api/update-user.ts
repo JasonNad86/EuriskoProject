@@ -21,7 +21,9 @@ export async function updateUserProfile({
     if (profileImage.size > maxSize) {
       Alert.alert('Profile image must be less than 5MB.');
     }
-    formData.append('profileImage', profileImage);
+    else{
+    formData.append('profileImage', profileImage)
+    }
   }
 
   const response = await axiosInstance.put('/user/profile', formData, {

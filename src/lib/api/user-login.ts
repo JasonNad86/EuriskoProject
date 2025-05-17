@@ -14,10 +14,17 @@ export async function userLogin({
   const payload = {
     email,
     password,
-    ...(token_expires_in && {token_expires_in}),
+    ...(token_expires_in && { token_expires_in }),
   };
-  const response = await axiosInstance.post('/auth/login', {
-    payload,
-  });
-  return response.data;
+
+  console.log('📤 [LOGIN] Payload:', payload);
+
+  try {
+    const response = await axiosInstance.post('/auth/login', payload);
+    console.log('✅ [LOGIN] Response:', response.data);
+    return response.data;
+  } catch (error: any) {
+    console.log('❌ [LOGIN] Error:', error?.response?.data || error.message);
+    throw error;
+  }
 }

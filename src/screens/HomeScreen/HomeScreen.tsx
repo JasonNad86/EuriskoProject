@@ -7,17 +7,17 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { getHomeStyles } from './HomeScreenStyles';
 import { Product } from '../../types/Product';
-import { useAuth } from '../../context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faMoon, faSun, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import CustomText from '../../components/CustomText/CustomText';
 import { useTheme } from '../../context/ThemeContext';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import { useAuthStore } from '../../store/AuthStore';
 
 const HomeScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<MainStackParams>>();
-  const { logout } = useAuth();
+  const {logout} = useAuthStore();
   const { isDark, toggleTheme } = useTheme();
   const styles = getHomeStyles(isDark)
 
@@ -29,19 +29,11 @@ const HomeScreen = () => {
   );
 
   const handleLogout = () => {
-    const success = !!logout();
-    if (success) {
+    logout()
       Toast.show({
         type: 'success',
         text1: 'Logout Successful',
       });
-    } else {
-      Toast.show({
-        type: 'error',
-        text1: 'Logout Failed',
-        text2: 'Something went wrong. Please try again.',
-      });
-    }
   };
   
 

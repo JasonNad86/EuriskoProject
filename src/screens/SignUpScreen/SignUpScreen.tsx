@@ -13,8 +13,15 @@ import CustomText from '../../components/CustomText/CustomText';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {useTheme} from '../../context/ThemeContext';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
+import {createUser} from '../../lib/api/create-user';
+import {QueryKeys} from '../../constants/QueryKeys';
+import Toast from 'react-native-toast-message';
+import {useAuthStore} from '../../store/AuthStore';
 
 const SignUpScreen = () => {
+  const {setSignupEmail} = useAuthStore();
+  const queryClient = useQueryClient();
   const navigation =
     useNavigation<NativeStackNavigationProp<AuthStackParams>>();
   const [showPassword, setShowPassword] = useState(false);
@@ -28,153 +35,178 @@ const SignUpScreen = () => {
   } = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      name: '',
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
-      phoneNumber: '',
+    },
+  });
+
+  const createUserMutation = useMutation({
+    mutationFn: createUser,
+    onSuccess: (_,variables) => {
+      setSignupEmail(variables.email)
+      Toast.show({
+        type: 'success',
+        text1:
+          'User created successfully. Please check your email for verification.',
+      });
+      queryClient.invalidateQueries({queryKey: [QueryKeys.USERS]});
+      navigation.navigate('Verification');
+    },
+    onError: () => {
+      Toast.show({type: 'error', text1: 'Failed to add user.'});
     },
   });
 
   const onSubmit = (data: SignupFormData) => {
-    console.log('Signup Data:', data);
+    createUserMutation.mutate({
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      password: data.password,
+    });
+    console.log("Data",data)
   };
 
   return (
     <SafeAreaView style={{flex: 1}}>
-    <View style={styles.navbar}>
-      <TouchableOpacity onPress={toggleTheme}>
-        <FontAwesomeIcon
-          icon={isDark ? faSun : faMoon}
-          color={isDark ? 'orange' : 'black'}
-        />
-      </TouchableOpacity>
-    </View>
-    <View style={styles.container}>
-      <CustomText style={styles.title}>Sign Up</CustomText>
-      <View style={styles.formWrapper}>
-        <View style={styles.formContainer}>
-          <Controller
-            control={control}
-            name="name"
-            render={({field: {onChange, value}}) => (
-              <View style={styles.inputContainer}>
-                <CustomText style={styles.label}>Full Name</CustomText>
-                <TextInput
-                  placeholder="John Doe"
-                  placeholderTextColor="#9CA3AF"
-                  autoCapitalize="words"
-                  autoComplete="name"
-                  value={value}
-                  onChangeText={onChange}
-                  style={styles.input}
-                />
-              </View>
-            )}
+      <View style={styles.navbar}>
+        <TouchableOpacity onPress={toggleTheme}>
+          <FontAwesomeIcon
+            icon={isDark ? faSun : faMoon}
+            color={isDark ? 'orange' : 'black'}
           />
-          {errors.name && (
-            <CustomText style={styles.error}>{errors.name.message}</CustomText>
-          )}
-
-          <Controller
-            control={control}
-            name="email"
-            render={({field: {onChange, value}}) => (
-              <View style={styles.inputContainer}>
-                <CustomText style={styles.label}>Email</CustomText>
-                <TextInput
-                  placeholder="johndoe@example.com"
-                  placeholderTextColor="#9CA3AF"
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  autoComplete="email"
-                  value={value}
-                  onChangeText={onChange}
-                  style={styles.input}
-                />
-              </View>
-            )}
-          />
-          {errors.email && (
-            <CustomText style={styles.error}>{errors.email.message}</CustomText>
-          )}
-
-          <Controller
-            control={control}
-            name="password"
-            render={({field: {onChange, value}}) => (
-              <View style={styles.inputContainer}>
-                <CustomText style={styles.label}>Password</CustomText>
-                <View style={styles.passwordInput}>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.container}>
+        <CustomText style={styles.title}>Sign Up</CustomText>
+        <View style={styles.formWrapper}>
+          <View style={styles.formContainer}>
+            <Controller
+              control={control}
+              name="firstName"
+              render={({field: {onChange, value}}) => (
+                <View style={styles.inputContainer}>
+                  <CustomText style={styles.label}>First Name</CustomText>
                   <TextInput
-                    placeholder="••••••••"
+                    placeholder="John"
                     placeholderTextColor="#9CA3AF"
-                    secureTextEntry={!showPassword}
                     autoCapitalize="none"
+                    autoComplete="name-given"
                     value={value}
                     onChangeText={onChange}
-                    style={[styles.input, {flex: 1}]}
+                    style={styles.input}
                   />
-                  <TouchableOpacity
-                    onPress={() => setShowPassword(!showPassword)}
-                    style={styles.eyeButton}>
-                    {showPassword ? (
-                      <FontAwesomeIcon icon={faEyeSlash} />
-                    ) : (
-                      <FontAwesomeIcon icon={faEye} />
-                    )}
-                  </TouchableOpacity>
                 </View>
-              </View>
+              )}
+            />
+            {errors.firstName && (
+              <CustomText style={styles.error}>
+                {errors.firstName.message}
+              </CustomText>
             )}
-          />
-          {errors.password && (
-            <CustomText style={styles.error}>
-              {errors.password.message}
-            </CustomText>
-          )}
 
-          <Controller
-            control={control}
-            name="phoneNumber"
-            render={({field: {onChange, value}}) => (
-              <View style={styles.inputContainer}>
-                <CustomText style={styles.label}>Phone Number</CustomText>
-                <TextInput
-                  placeholder="123-456-7890"
-                  placeholderTextColor="#9CA3AF"
-                  keyboardType="phone-pad"
-                  autoComplete="tel"
-                  value={value}
-                  onChangeText={onChange}
-                  style={styles.input}
-                />
-              </View>
+            <Controller
+              control={control}
+              name="lastName"
+              render={({field: {onChange, value}}) => (
+                <View style={styles.inputContainer}>
+                  <CustomText style={styles.label}>Last Name</CustomText>
+                  <TextInput
+                    placeholder="Doe"
+                    placeholderTextColor="#9CA3AF"
+                    autoCapitalize="none"
+                    autoComplete="name-family"
+                    value={value}
+                    onChangeText={onChange}
+                    style={styles.input}
+                  />
+                </View>
+              )}
+            />
+            {errors.lastName && (
+              <CustomText style={styles.error}>
+                {errors.lastName.message}
+              </CustomText>
             )}
-          />
-          {errors.phoneNumber && (
-            <CustomText style={styles.error}>
-              {errors.phoneNumber.message}
-            </CustomText>
-          )}
 
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handleSubmit(onSubmit)}>
-            <CustomText style={styles.buttonText}>Sign Up</CustomText>
-          </TouchableOpacity>
+            <Controller
+              control={control}
+              name="email"
+              render={({field: {onChange, value}}) => (
+                <View style={styles.inputContainer}>
+                  <CustomText style={styles.label}>Email</CustomText>
+                  <TextInput
+                    placeholder="johndoe@example.com"
+                    placeholderTextColor="#9CA3AF"
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    autoComplete="email"
+                    value={value}
+                    onChangeText={onChange}
+                    style={styles.input}
+                  />
+                </View>
+              )}
+            />
+            {errors.email && (
+              <CustomText style={styles.error}>
+                {errors.email.message}
+              </CustomText>
+            )}
 
-          <TouchableOpacity
-            style={styles.navigationLinkContainer}
-            onPress={() => navigation.navigate('Login')}>
-            <CustomText style={styles.navigationLinkText}>
-              Already have an account?{' '}
-              <CustomText style={styles.navigationLink}>Login</CustomText>
-            </CustomText>
-          </TouchableOpacity>
+            <Controller
+              control={control}
+              name="password"
+              render={({field: {onChange, value}}) => (
+                <View style={styles.inputContainer}>
+                  <CustomText style={styles.label}>Password</CustomText>
+                  <View style={styles.passwordInput}>
+                    <TextInput
+                      placeholder="••••••••"
+                      placeholderTextColor="#9CA3AF"
+                      secureTextEntry={!showPassword}
+                      autoCapitalize="none"
+                      value={value}
+                      onChangeText={onChange}
+                      style={[styles.input, {flex: 1}]}
+                    />
+                    <TouchableOpacity
+                      onPress={() => setShowPassword(!showPassword)}
+                      style={styles.eyeButton}>
+                      <FontAwesomeIcon
+                        icon={showPassword ? faEyeSlash : faEye}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              )}
+            />
+            {errors.password && (
+              <CustomText style={styles.error}>
+                {errors.password.message}
+              </CustomText>
+            )}
+
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleSubmit(onSubmit)}>
+              <CustomText style={styles.buttonText}>Sign Up</CustomText>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.navigationLinkContainer}
+              onPress={() => navigation.navigate('Login')}>
+              <CustomText style={styles.navigationLinkText}>
+                Already have an account?{' '}
+                <CustomText style={styles.navigationLink}>Login</CustomText>
+              </CustomText>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
-  </SafeAreaView>
+    </SafeAreaView>
   );
 };
 
