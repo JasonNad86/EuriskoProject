@@ -1,3 +1,4 @@
+import {Alert} from 'react-native';
 import {axiosInstance} from '../axiosInstance';
 
 export type CreateUserParams = {
@@ -20,7 +21,12 @@ export async function createUser({
   formData.append('password', password);
   formData.append('firstName', firstName);
   formData.append('lastName', lastName);
+
   if (profileImage) {
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (profileImage.size > maxSize) {
+      Alert.alert('Profile image must be less than 5MB.');
+    }
     formData.append('profileImage', profileImage);
   }
 
